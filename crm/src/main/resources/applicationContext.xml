@@ -30,8 +30,6 @@
         <property name="typeAliasesPackage" value="com.lwc.pojo"/>
     </bean>
 
-
-
     <!--引入jdbc的配置文件-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <!--配置数据源-->
