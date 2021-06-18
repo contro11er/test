@@ -143,7 +143,7 @@ public class MyTest {
 
     @Test
     public void test04() {
-
+        System.out.println("zzz");
     }
 
 
