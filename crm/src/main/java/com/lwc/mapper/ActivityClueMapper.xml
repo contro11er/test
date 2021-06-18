@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwc.mapper.ActivityClueMapper">
+    <insert id="addList">
+        insert into tbl_clue_activity_relation values
+        <foreach collection="list" item="l" separator=",">
+            (
+            #{l.id},
+            #{l.clueId},
+            #{l.activityId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="del">
+        delete from tbl_clue_activity_relation where clueId=#{clueId}
+    </delete>
+</mapper>

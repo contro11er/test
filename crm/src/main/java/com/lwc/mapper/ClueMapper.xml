@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwc.mapper.ClueMapper">
+    <sql id="tj">
+        <where>
+            <if test="fullName!=null and fullName!=''">
+                and fullName like '%' #{fullName} '%'
+            </if>
+            <if test="company!=null and company!=''">
+                and company like '%' #{company} '%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone like '%' #{phone} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and owner like '%' #{owner} '%'
+            </if>
+            <if test="mphone!=null and mphone!=''">
+                and mphone like '%' #{mphone} '%'
+            </if>
+            <if test="source!=null and source!=''">
+                and source=#{source}
+            </if>
+            <if test="state!=null and state!=''">
+                and state=#{state}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getNum" resultType="int">
+        select count(*) from tbl_clue
+        <include refid="tj"/>
+    </select>
+
+    <select id="getLikeList" resultType="com.lwc.pojo.Clue">
+        select * from tbl_clue
+        <include refid="tj"/>
+        limit #{startIndex},#{rowsPerPage}
+    </select>
+
+    <insert id="add">
+        insert into tbl_clue values
+        (
+              #{id},
+              #{owner},
+              #{company},
+              #{phone},
+              #{website},
+              #{description},
+              #{fullName},
+              #{appellation},
+              #{source},
+              #{email},
+              #{mphone},
+              #{job},
+              #{state},
+              #{createBy},
+              #{createTime},
+              #{editBy},
+              #{editTime},
+              #{contactSummary},
+              #{nextContactTime},
+              #{address}
+        )
+    </insert>
+
+
+</mapper>

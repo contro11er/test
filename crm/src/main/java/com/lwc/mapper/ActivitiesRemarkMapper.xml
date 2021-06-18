@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwc.mapper.ActivitiesRemarkMapper">
+    <select id="getARById" resultType="com.lwc.pojo.ActivitiesRemark">
+        select * from tbl_marketing_activities_remark where id = #{id}
+    </select>
+
+    <select id="getARByIdList" resultType="com.lwc.pojo.ActivitiesRemark">
+        select * from tbl_marketing_activities_remark where marketingActivitiesId = #{marketingActivitiesId}
+        ORDER BY ifnull(editTime,noteTime) desc
+    </select>
+
+    <select id="getARList" resultType="com.lwc.pojo.ActivitiesRemark">
+        select
+          id,
+          notePerson,
+          noteContent,
+          noteTime,
+          editPerson,
+          editTime,
+          editFlag,
+          marketingActivitiesId
+        from tbl_marketing_activities_remark
+    </select>
+
+    <delete id="delAR">
+        delete from tbl_marketing_activities_remark where id=#{id}
+    </delete>
+
+    <insert id="add">
+    insert into tbl_marketing_activities_remark values (
+        #{id},
+        #{notePerson},
+        #{noteContent},
+        #{noteTime},
+        #{editPerson},
+        #{editTime},
+        #{editFlag},
+        #{marketingActivitiesId}
+    )
+    </insert>
+
+    <update id="edit">
+        update tbl_marketing_activities_remark set
+            noteContent=#{noteContent},
+            editPerson=#{editPerson},
+            editTime=#{editTime}
+         where id=#{id}
+    </update>
+</mapper>

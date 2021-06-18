@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--扫描web组件-->
+    <context:component-scan base-package="com.lwc.web.controller"/>
+    <!--扫描异常处理包-->
+    <context:component-scan base-package="com.lwc.web.error"/>
+    <!--注解驱动-->
+    <mvc:annotation-driven/>
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--视图前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <!--视图后缀-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- spring的静态资源管理 -->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <!-- 配置站点入口,这里配置后无序再去控制器写跳转方法-->
+    <!--view-name重定向到指定页面-->
+    <!--如果当前路径是/ 则交给相应的视图解析器直接解析为视图-->
+    <!--<mvc:view-controller path="/" view-name="login"/>-->
+
+    <!--登录权限的拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--指定要拦截的请求uri,**表示多级目录和目录中的文件-->
+            <mvc:mapping path="/**"/>
+            <!--排除和登录相关的资源以及静态资源-->
+            <mvc:exclude-mapping path="/static/**"/>
+            <mvc:exclude-mapping path="/user/login.do"/>
+            <mvc:exclude-mapping path="/login.html"/>
+            <mvc:exclude-mapping path="/"/>
+            <!--制定自定义拦截器-->
+            <bean class="com.lwc.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <!-- 文件上传解析器 id必须是multipartResolver-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传文件的总大小-->
+        <property name="maxUploadSize" value="#{1024*1024*100}"/>
+        <!--默认编码-->
+        <property name="defaultEncoding" value="utf-8"/>
+    </bean>
+
+</beans>

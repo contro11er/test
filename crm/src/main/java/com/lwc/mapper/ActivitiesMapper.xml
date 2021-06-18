@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwc.mapper.ActivitiesMapper">
+
+    <select id="getList" resultType="com.lwc.pojo.Activities">
+        select * from tbl_marketing_activities
+        <where>
+            <if test="name!=''and name!=null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="owner!=''and owner!=null">
+                and owner like concat('%',#{owner},'%');
+            </if>
+            <if test="startDate!=''and startDate!=null">
+                and startDate =#{startDate}
+            </if>
+            <if test="endDate!=''and name!=endDate">
+                and endDate=#{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="getActivitiesById" resultType="com.lwc.pojo.Activities">
+         select * from tbl_marketing_activities where id=#{id}
+    </select>
+
+    <!--关联的话,直接让另两张表合在一起-->
+    <select id="relationClue" resultType="com.lwc.pojo.Activities">
+      SELECT a.*
+      from tbl_marketing_activities a
+      join tbl_clue_activity_relation b
+      on a.id=b.activityId
+      WHERE b.clueId=#{id}
+    </select>
+
+    <insert id="add">
+      insert into tbl_marketing_activities values (
+      #{id},
+      #{owner},
+      #{name},
+      #{startDate},
+      #{endDate},
+      #{cost},
+      #{description},
+      #{createBy},
+      #{createTime},
+      #{editBy},
+      #{editTime}
+      )
+    </insert>
+
+    <insert id="addList">
+        insert into tbl_marketing_activities values
+        <foreach collection="list" item="a" separator=",">
+            (
+            #{a.id},
+            #{a.owner},
+            #{a.name},
+            #{a.startDate},
+            #{a.endDate},
+            #{a.cost},
+            #{a.description},
+            #{a.createBy},
+            #{a.createTime},
+            #{a.editBy},
+            #{a.editTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update">
+      update tbl_marketing_activities set
+        owner=#{owner},
+        name=#{name},
+        startDate=#{startDate},
+        endDate=#{endDate},
+        cost=#{cost},
+        description=#{description},
+        editBy=#{editBy},
+        editTime=#{editTime}
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete from tbl_marketing_activities where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>
